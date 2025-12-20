@@ -1,0 +1,244 @@
+/* Auth.css */
+.auth-page {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    /* HQ Mountain Image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow-y: auto;
+    /* Handle smaller screens/tall forms */
+}
+
+/* Optional: Dark overlay to ensure text readability if image is too bright */
+.auth-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.auth-container {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    /* Transparent white */
+    backdrop-filter: blur(10px);
+    /* Glass blur effect */
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 3rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    color: white;
+    text-align: center;
+    margin: 2rem 0;
+    /* Add margin for vertical scrolling on mobile */
+}
+
+.auth-header {
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    position: relative;
+    text-align: left;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+    color: white;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.input-group select {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+    color: white;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    outline: none;
+    transition: border-color 0.3s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+
+
+/* Fix for Chrome/Edge Autofill background */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:focus,
+.input-group input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0) inset !important;
+    -webkit-text-fill-color: white !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+}
+
+
+
+/* Custom Glass Dropdown */
+.custom-select-wrapper {
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+}
+
+.custom-select-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 1rem;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    transition: 0.3s;
+}
+
+.custom-select-trigger .arrow {
+    font-size: 0.8rem;
+    transition: transform 0.3s;
+}
+
+.custom-select-wrapper:hover .custom-select-trigger {
+    border-bottom-color: white;
+}
+
+.custom-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(43, 43, 43, 0.6);
+    /* Semi-transparent generic dark */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 4px;
+    z-index: 10;
+    overflow: hidden;
+    margin-top: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-option {
+    padding: 10px 15px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-align: left;
+}
+
+.custom-option:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.custom-option.selected {
+    background: rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+.auth-button {
+    background-color: white;
+    color: #333;
+    border: none;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.auth-button:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.auth-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-link a {
+    color: white;
+    font-weight: 600;
+    margin-left: 0.5rem;
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    color: #51cf66;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
