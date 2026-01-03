@@ -10,39 +10,28 @@ export default function MainLayout() {
     };
 
     return (
-        <div className="main-layout" style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        <div className="flex flex-col h-screen bg-[#0e1116] text-gray-100 font-sans">
             {/* Navigation */}
-            <nav style={{
-                padding: '1rem 2rem',
-                borderBottom: '1px solid rgba(255,255,255,0.1)',
-                display: 'flex',
-                gap: '2rem',
-                alignItems: 'center',
-                background: 'var(--color-surface, #1e1e1e)'
-            }}>
-                <h1 style={{ margin: 0, marginRight: 'auto', fontSize: '1.5rem', background: 'linear-gradient(45deg, #FF6B6B, #4ECDC4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Family Tree</h1>
+            <nav className="px-8 py-4 border-b border-white/10 flex gap-8 items-center bg-[#161b22] shadow-sm">
+                <h1 className="m-0 mr-auto text-2xl font-bold bg-gradient-to-r from-[#FF6B6B] to-[#4ECDC4] bg-clip-text text-transparent">
+                    Family Tree
+                </h1>
 
-                <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                    <Link to="/home" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
-                    <Link to="/tree" style={{ color: 'inherit', textDecoration: 'none' }}>Tree View</Link>
-                    <Link to="/people" style={{ color: 'inherit', textDecoration: 'none' }}>People</Link>
-                    <Link to="/admin" style={{ color: 'inherit', textDecoration: 'none' }}>Admin</Link>
+                <div className="flex gap-6 items-center text-sm font-medium">
+                    <Link to="/home" className="text-gray-400 hover:text-white transition-colors">Home</Link>
+                    <Link to="/tree" className="text-gray-400 hover:text-white transition-colors">Tree View</Link>
+                    <Link to="/people" className="text-gray-400 hover:text-white transition-colors">People</Link>
+                    <Link to="/admin" className="text-gray-400 hover:text-white transition-colors">Admin</Link>
+                    <Link to="/api-explorer" className="text-gray-400 hover:text-white transition-colors">API</Link>
                     <button
                         onClick={handleLogout}
-                        style={{
-                            background: 'transparent',
-                            border: '1px solid rgba(255,255,255,0.2)',
-                            color: 'inherit',
-                            padding: '0.4rem 1rem',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
-                        }}
+                        className="bg-transparent border border-white/20 text-gray-300 px-4 py-1.5 rounded hover:bg-white/5 hover:text-white hover:border-white/40 transition-all cursor-pointer"
                     >
                         Logout
                     </button>
                 </div>
             </nav>
-            <main style={{ flex: 1, overflow: 'auto', padding: '1rem', position: 'relative' }}>
+            <main className="flex-1 overflow-auto p-6 relative">
                 <Outlet />
             </main>
         </div>
