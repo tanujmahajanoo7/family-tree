@@ -1,81 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
 
-:root {
-  /* Premium Dark Theme Palette */
-  --color-primary-h: 250;
-  --color-primary-s: 100%;
-  --color-primary-l: 66%;
-  --color-primary: hsl(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l));
-  
-  --color-background: hsl(220, 15%, 10%);
+@theme {
+  --color-primary: hsl(250, 100%, 66%);
   --color-surface: hsl(220, 15%, 16%);
   --color-surface-hover: hsl(220, 15%, 20%);
-  
-  --color-text-main: hsl(0, 0%, 100%);
-  --color-text-muted: hsl(220, 10%, 70%);
-  
-  --color-border: hsl(220, 15%, 25%);
-
-  --font-family-main: 'Inter', system-ui, -apple-system, sans-serif;
-  
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 1rem;
-  
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.3s ease;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
+/* Base styles */
 body {
-  font-family: var(--font-family-main);
-  background-color: var(--color-background);
-  color: var(--color-text-main);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  @apply bg-[#0e1116] text-white antialiased font-sans leading-relaxed;
 }
 
-button {
-  cursor: pointer;
-  font-family: inherit;
-}
-
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-a:hover {
-  filter: brightness(1.1);
-}
-
-/* Scrollbar */
+/* Scrollbar customization using Tailwind variants/utilities if possible, or plain CSS for cross-browser complex styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--color-background); 
+  @apply bg-[#0e1116];
 }
+
 ::-webkit-scrollbar-thumb {
-  background: var(--color-surface); 
-  border-radius: var(--radius-md);
+  @apply bg-[#1f293a] rounded-md;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border); 
+  @apply bg-[#2d3748];
 }

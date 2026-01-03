@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Auth.css';
 
 export default function Login() {
     const navigate = useNavigate();
@@ -44,13 +43,23 @@ export default function Login() {
     };
 
     return (
-        <div className="auth-page">
-            <div className="auth-container">
-                <div className="auth-header">
-                    <h2>Login</h2>
+        <div className="relative w-screen h-screen flex justify-center items-center overflow-hidden">
+            {/* Background Image */}
+            <div
+                className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: "url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')"
+                }}
+            >
+                <div className="absolute inset-0 bg-black/30" />
+            </div>
+
+            <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-12 w-[90%] max-w-[400px] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] text-center text-white">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold tracking-wide">Login</h2>
                 </div>
-                <form onSubmit={handleSubmit} className="auth-form">
-                    <div className="input-group">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                    <div className="relative text-left">
                         <input
                             type="text"
                             name="username"
@@ -58,9 +67,10 @@ export default function Login() {
                             value={formData.username}
                             onChange={handleChange}
                             required
+                            className="w-full px-3 bg-transparent border-b border-white/50 py-2.5 text-base text-white placeholder-white/90 outline-none focus:border-white transition-colors rounded-full"
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="relative text-left">
                         <input
                             type="password"
                             name="password"
@@ -68,24 +78,34 @@ export default function Login() {
                             value={formData.password}
                             onChange={handleChange}
                             required
+                            className="w-full px-3 bg-transparent border-b border-white/50 py-2.5 text-base text-white placeholder-white/90 outline-none focus:border-white transition-colors rounded-full"
                         />
                     </div>
 
-                    <div className="form-options">
-                        <label className="remember-me">
-                            <input type="checkbox" /> Remember me
+                    <div className="flex justify-between items-center text-sm text-white/80">
+                        <label className="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" className="accent-white" /> Remember me
                         </label>
-                        <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
+                        <Link to="/forgot-password" className="hover:text-white hover:underline transition-colors">Forgot password?</Link>
                     </div>
 
-                    <button type="submit" className="auth-button">Log In</button>
+                    <button
+                        type="submit"
+                        className="w-full bg-white text-gray-800 py-3 text-base font-semibold rounded hover:bg-gray-100 hover:-translate-y-0.5 transition-all mt-2 cursor-pointer shadow-md"
+                    >
+                        Log In
+                    </button>
                 </form>
 
-                <div className="auth-link">
-                    Don't have an account? <Link to="/signup">Register</Link>
+                <div className="mt-6 text-sm text-white/80">
+                    Don't have an account? <Link to="/signup" className="text-white font-semibold ml-1 hover:underline">Register</Link>
                 </div>
 
-                {message && <p className={message === 'Login successful!' ? 'success-message' : 'error-message'}>{message}</p>}
+                {message && (
+                    <p className={`mt-4 text-sm font-medium ${message === 'Login successful!' ? 'text-green-400' : 'text-red-400'}`}>
+                        {message}
+                    </p>
+                )}
             </div>
         </div>
     );

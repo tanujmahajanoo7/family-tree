@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Auth.css';
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -51,13 +50,23 @@ export default function Signup() {
     };
 
     return (
-        <div className="auth-page">
-            <div className="auth-container">
-                <div className="auth-header">
-                    <h2>Sign Up</h2>
+        <div className="relative w-screen h-screen flex justify-center items-center overflow-hidden">
+            {/* Background Image */}
+            <div
+                className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
+                style={{
+                    backgroundImage: "url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')"
+                }}
+            >
+                <div className="absolute inset-0 bg-black/30" />
+            </div>
+
+            <div className="relative z-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-12 w-[90%] max-w-[400px] shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] text-center text-white my-8 overflow-y-auto max-h-[90vh]">
+                <div className="mb-8">
+                    <h2 className="text-3xl font-bold tracking-wide">Sign Up</h2>
                 </div>
-                <form onSubmit={handleSubmit} className="auth-form">
-                    <div className="input-group">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                    <div className="relative text-left">
                         <input
                             type="text"
                             name="username"
@@ -65,9 +74,10 @@ export default function Signup() {
                             value={formData.username}
                             onChange={handleChange}
                             required
+                            className="w-full bg-transparent border-b border-white/50 py-2.5 text-base text-white placeholder-white/90 outline-none focus:border-white transition-colors"
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="relative text-left">
                         <input
                             type="email"
                             name="email"
@@ -75,9 +85,10 @@ export default function Signup() {
                             value={formData.email}
                             onChange={handleChange}
                             required
+                            className="w-full bg-transparent border-b border-white/50 py-2.5 text-base text-white placeholder-white/90 outline-none focus:border-white transition-colors"
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="relative text-left">
                         <input
                             type="password"
                             name="password"
@@ -85,23 +96,26 @@ export default function Signup() {
                             value={formData.password}
                             onChange={handleChange}
                             required
+                            className="w-full bg-transparent border-b border-white/50 py-2.5 text-base text-white placeholder-white/90 outline-none focus:border-white transition-colors"
                         />
                     </div>
-                    <div className="input-group custom-select-wrapper" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                        <div className="custom-select-trigger">
+
+                    {/* Custom Dropdown */}
+                    <div className="relative text-left cursor-pointer select-none" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                        <div className="flex justify-between items-center py-2.5 border-b border-white/50 text-white transition-colors hover:border-white">
                             {formData.role === 'USER' ? 'User' : 'Admin'}
-                            <span className="arrow">▼</span>
+                            <span className={`text-xs transform transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`}>▼</span>
                         </div>
                         {isDropdownOpen && (
-                            <div className="custom-options">
+                            <div className="absolute top-full left-0 right-0 bg-black/60 backdrop-blur-md rounded mt-1 z-20 overflow-hidden shadow-lg border border-white/10">
                                 <div
-                                    className={`custom-option ${formData.role === 'USER' ? 'selected' : ''}`}
+                                    className={`p-3 hover:bg-white/20 transition-colors ${formData.role === 'USER' ? 'bg-white/10 font-bold' : ''}`}
                                     onClick={(e) => { e.stopPropagation(); handleRoleSelect('USER'); }}
                                 >
                                     User
                                 </div>
                                 <div
-                                    className={`custom-option ${formData.role === 'ADMIN' ? 'selected' : ''}`}
+                                    className={`p-3 hover:bg-white/20 transition-colors ${formData.role === 'ADMIN' ? 'bg-white/10 font-bold' : ''}`}
                                     onClick={(e) => { e.stopPropagation(); handleRoleSelect('ADMIN'); }}
                                 >
                                     Admin
@@ -109,14 +123,21 @@ export default function Signup() {
                             </div>
                         )}
                     </div>
-                    <button type="submit" className="auth-button">Sign Up</button>
+
+                    <button type="submit" className="w-full bg-white text-gray-800 py-3 text-base font-semibold rounded hover:bg-gray-100 hover:-translate-y-0.5 transition-all mt-2 cursor-pointer shadow-md">
+                        Sign Up
+                    </button>
                 </form>
 
-                <div className="auth-link">
-                    Already have an account? <Link to="/login">Login</Link>
+                <div className="mt-6 text-sm text-white/80">
+                    Already have an account? <Link to="/login" className="text-white font-semibold ml-1 hover:underline">Login</Link>
                 </div>
 
-                {message && <p className={message.startsWith('Error') || message === 'Network error' ? 'error-message' : 'success-message'}>{message}</p>}
+                {message && (
+                    <p className={`mt-4 text-sm font-medium ${message.startsWith('Error') || message === 'Network error' ? 'text-red-400' : 'text-green-400'}`}>
+                        {message}
+                    </p>
+                )}
             </div>
         </div>
     );
