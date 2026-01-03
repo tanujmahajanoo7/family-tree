@@ -32,4 +32,9 @@ public class RelationshipController {
     public ResponseEntity<List<Relationship>> getRelationships(@PathVariable Long personId) {
         return ResponseEntity.ok(relationshipService.getRelationshipsForPerson(personId));
     }
+
+    @GetMapping
+    public ResponseEntity<List<Relationship>> getAllRelationships() {
+        return ResponseEntity.ok(relationshipService.getAllRelationships());
+    }
 }

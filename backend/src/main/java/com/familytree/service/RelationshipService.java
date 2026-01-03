@@ -59,7 +59,8 @@ public class RelationshipService {
 
         Relationship saved = relationshipRepository.save(relationship);
         auditService.logAction("RELATIONSHIP", saved.getId(), "CREATE", userId,
-                "Created relationship " + dto.getRelationshipType() + " between " + person1.getFullName() + " and " + person2.getFullName());
+                "Created relationship " + dto.getRelationshipType() + " between " + person1.getFullName() + " and "
+                        + person2.getFullName());
         return saved;
     }
 
@@ -71,7 +72,12 @@ public class RelationshipService {
     }
 
     public List<Relationship> getRelationshipsForPerson(Long personId) {
-        // This is a simplified lookup. In reality, we'd check both person1 and person2 columns
+        // This is a simplified lookup. In reality, we'd check both person1 and person2
+        // columns
         return relationshipRepository.findByPerson1IdOrPerson2Id(personId, personId);
+    }
+
+    public List<Relationship> getAllRelationships() {
+        return relationshipRepository.findAll();
     }
 }
