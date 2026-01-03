@@ -1,8 +1,9 @@
 export default function Home() {
     return (
         <div>
-            <h2>Family Tree Visualization</h2>
-            <p>Welcome to your family tree.</p>
+            <div className="flex justify-center items-center h-screen">
+                <h2>Welcome to Family Tree Visualization</h2>
+            </div>
         </div>
     );
 }

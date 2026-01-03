@@ -5,6 +5,11 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Welcome from './pages/Welcome';
+import FamilyTree from './pages/FamilyTree';
+import PersonList from './pages/PersonList';
+import PersonForm from './pages/PersonForm';
+import PersonDetails from './pages/PersonDetails';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -21,6 +26,12 @@ function App() {
 
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/tree" element={<FamilyTree />} />
+          <Route path="/people" element={<PersonList />} />
+          <Route path="/people/new" element={<PersonForm />} />
+          <Route path="/people/:id" element={<PersonDetails />} />
+          <Route path="/people/:id/edit" element={<PersonForm />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           {/* Add more protected routes here */}
         </Route>
 
