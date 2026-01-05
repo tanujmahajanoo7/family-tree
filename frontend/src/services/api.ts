@@ -88,6 +88,7 @@ export const personService = {
 };
 
 export const relationshipService = {
+    getAll: () => request<Relationship[]>('/relationship'),
     getByPerson: (personId: number) => request<Relationship[]>(`/relationship/person/${personId}`),
     create: (data: Partial<Relationship>) => request<Relationship>('/relationship', {
         method: 'POST',

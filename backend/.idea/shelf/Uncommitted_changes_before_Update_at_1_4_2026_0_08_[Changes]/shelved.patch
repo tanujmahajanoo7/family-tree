@@ -1,0 +1,229 @@
+Index: ../README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../README.md b/../README.md
+deleted file mode 100644
+--- a/../README.md	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ /dev/null	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
+@@ -1,1 +0,0 @@
+-"# family-tree" 
+Index: ../frontend/src/layouts/MainLayout.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { Outlet } from 'react-router-dom';\r\n\r\nexport default function MainLayout() {\r\n    return (\r\n        <div className=\"main-layout\">\r\n            {/* Navigation will go here */}\r\n            <nav style={{ padding: '1rem', borderBottom: '1px solid var(--color-border)' }}>\r\n                <h1>Family Tree</h1>\r\n            </nav>\r\n            <main style={{ padding: '1rem' }}>\r\n                <Outlet />\r\n            </main>\r\n        </div>\r\n    );\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/layouts/MainLayout.tsx b/../frontend/src/layouts/MainLayout.tsx
+--- a/../frontend/src/layouts/MainLayout.tsx	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ b/../frontend/src/layouts/MainLayout.tsx	(date 1766261653517)
+@@ -1,11 +1,25 @@
+-import { Outlet } from 'react-router-dom';
++import { Outlet, Link, useNavigate } from 'react-router-dom';
++import './MainLayout.css';
+ 
+ export default function MainLayout() {
++    const navigate = useNavigate();
++
++    const handleLogout = () => {
++        localStorage.removeItem('user');
++        navigate('/login');
++    };
++
+     return (
+         <div className="main-layout">
+-            {/* Navigation will go here */}
+-            <nav style={{ padding: '1rem', borderBottom: '1px solid var(--color-border)' }}>
+-                <h1>Family Tree</h1>
++            <nav className="main-nav">
++                <div className="nav-brand">Family Tree</div>
++                <div className="nav-links">
++                    <Link to="/home" className="nav-item">Home</Link>
++                    <Link to="/people" className="nav-item">People</Link>
++                    <Link to="/tree" className="nav-item">Tree</Link>
++                    <Link to="/admin" className="nav-item">Admin</Link>
++                    <button onClick={handleLogout} className="btn-logout">Logout</button>
++                </div>
+             </nav>
+             <main style={{ padding: '1rem' }}>
+                 <Outlet />
+Index: ../frontend/src/App.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';\r\nimport MainLayout from './layouts/MainLayout';\r\nimport AuthLayout from './layouts/AuthLayout';\r\nimport Home from './pages/Home';\r\nimport Login from './pages/Login';\r\nimport Signup from './pages/Signup';\r\nimport Welcome from './pages/Welcome';\r\n\r\nfunction App() {\r\n  return (\r\n    <BrowserRouter>\r\n      <Routes>\r\n        <Route path=\"/\" element={<Welcome />} />\r\n\r\n        <Route path=\"/login\" element={<Login />} />\r\n        <Route path=\"/signup\" element={<Signup />} />\r\n\r\n        {/* AuthLayout is now unused, but keeping it if needed later */}\r\n        {/* <Route element={<AuthLayout />}>\r\n        </Route> */}\r\n\r\n        <Route element={<MainLayout />}>\r\n          <Route path=\"/home\" element={<Home />} />\r\n          {/* Add more protected routes here */}\r\n        </Route>\r\n\r\n        <Route path=\"*\" element={<Navigate to=\"/\" replace />} />\r\n      </Routes>\r\n    </BrowserRouter>\r\n  );\r\n}\r\n\r\nexport default App;\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/App.tsx b/../frontend/src/App.tsx
+--- a/../frontend/src/App.tsx	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ b/../frontend/src/App.tsx	(date 1766261375621)
+@@ -5,6 +5,11 @@
+ import Login from './pages/Login';
+ import Signup from './pages/Signup';
+ import Welcome from './pages/Welcome';
++import AdminDashboard from './pages/AdminDashboard';
++import PersonList from './pages/PersonList';
++import PersonForm from './pages/PersonForm';
++import PersonDetails from './pages/PersonDetails';
++import FamilyTree from './pages/FamilyTree';
+ 
+ function App() {
+   return (
+@@ -14,6 +19,7 @@
+ 
+         <Route path="/login" element={<Login />} />
+         <Route path="/signup" element={<Signup />} />
++        <Route path="/admin" element={<AdminDashboard />} />
+ 
+         {/* AuthLayout is now unused, but keeping it if needed later */}
+         {/* <Route element={<AuthLayout />}>
+@@ -21,6 +27,11 @@
+ 
+         <Route element={<MainLayout />}>
+           <Route path="/home" element={<Home />} />
++          <Route path="/people" element={<PersonList />} />
++          <Route path="/people/new" element={<PersonForm />} />
++          <Route path="/people/:id" element={<PersonDetails />} />
++          <Route path="/people/:id/edit" element={<PersonForm />} />
++          <Route path="/tree" element={<FamilyTree />} />
+           {/* Add more protected routes here */}
+         </Route>
+ 
+Index: ../frontend/src/pages/Login.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { useState } from 'react';\r\nimport { useNavigate, Link } from 'react-router-dom';\r\nimport './Auth.css';\r\n\r\nexport default function Login() {\r\n    const navigate = useNavigate();\r\n    const [formData, setFormData] = useState({\r\n        username: '',\r\n        password: ''\r\n    });\r\n    const [message, setMessage] = useState('');\r\n\r\n    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {\r\n        setFormData({\r\n            ...formData,\r\n            [e.target.name]: e.target.value\r\n        });\r\n    };\r\n\r\n    const handleSubmit = async (e: React.FormEvent) => {\r\n        e.preventDefault();\r\n        setMessage('');\r\n\r\n        try {\r\n            const response = await fetch('http://localhost:8080/api/auth/login', {\r\n                method: 'POST',\r\n                headers: {\r\n                    'Content-Type': 'application/json',\r\n                },\r\n                body: JSON.stringify(formData),\r\n            });\r\n\r\n            if (response.ok) {\r\n                const data = await response.json();\r\n                localStorage.setItem('user', JSON.stringify(data));\r\n                setMessage('Login successful!');\r\n                setTimeout(() => navigate('/home'), 1000);\r\n            } else {\r\n                setMessage('Invalid username or password');\r\n            }\r\n        } catch (error) {\r\n            setMessage('Network error');\r\n        }\r\n    };\r\n\r\n    return (\r\n        <div className=\"auth-page\">\r\n            <div className=\"auth-container\">\r\n                <div className=\"auth-header\">\r\n                    <h2>Login</h2>\r\n                </div>\r\n                <form onSubmit={handleSubmit} className=\"auth-form\">\r\n                    <div className=\"input-group\">\r\n                        <input\r\n                            type=\"text\"\r\n                            name=\"username\"\r\n                            placeholder=\"Enter your email\"\r\n                            value={formData.username}\r\n                            onChange={handleChange}\r\n                            required\r\n                        />\r\n                    </div>\r\n                    <div className=\"input-group\">\r\n                        <input\r\n                            type=\"password\"\r\n                            name=\"password\"\r\n                            placeholder=\"Enter your password\"\r\n                            value={formData.password}\r\n                            onChange={handleChange}\r\n                            required\r\n                        />\r\n                    </div>\r\n\r\n                    <div className=\"form-options\">\r\n                        <label className=\"remember-me\">\r\n                            <input type=\"checkbox\" /> Remember me\r\n                        </label>\r\n                        <Link to=\"/forgot-password\" className=\"forgot-password\">Forgot password?</Link>\r\n                    </div>\r\n\r\n                    <button type=\"submit\" className=\"auth-button\">Log In</button>\r\n                </form>\r\n\r\n                <div className=\"auth-link\">\r\n                    Don't have an account? <Link to=\"/signup\">Register</Link>\r\n                </div>\r\n\r\n                {message && <p className={message === 'Login successful!' ? 'success-message' : 'error-message'}>{message}</p>}\r\n            </div>\r\n        </div>\r\n    );\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/pages/Login.tsx b/../frontend/src/pages/Login.tsx
+--- a/../frontend/src/pages/Login.tsx	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ b/../frontend/src/pages/Login.tsx	(date 1766260639078)
+@@ -1,5 +1,6 @@
+ import { useState } from 'react';
+ import { useNavigate, Link } from 'react-router-dom';
++import { authService } from '../services/api';
+ import './Auth.css';
+ 
+ export default function Login() {
+@@ -22,24 +23,12 @@
+         setMessage('');
+ 
+         try {
+-            const response = await fetch('http://localhost:8080/api/auth/login', {
+-                method: 'POST',
+-                headers: {
+-                    'Content-Type': 'application/json',
+-                },
+-                body: JSON.stringify(formData),
+-            });
+-
+-            if (response.ok) {
+-                const data = await response.json();
+-                localStorage.setItem('user', JSON.stringify(data));
+-                setMessage('Login successful!');
+-                setTimeout(() => navigate('/home'), 1000);
+-            } else {
+-                setMessage('Invalid username or password');
+-            }
++            const data = await authService.login(formData);
++            localStorage.setItem('user', JSON.stringify(data));
++            setMessage('Login successful!');
++            setTimeout(() => navigate('/home'), 1000);
+         } catch (error) {
+-            setMessage('Network error');
++            setMessage('Invalid username or password');
+         }
+     };
+ 
+Index: ../frontend/src/pages/Signup.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import { useState } from 'react';\r\nimport { useNavigate, Link } from 'react-router-dom';\r\nimport './Auth.css';\r\n\r\nexport default function Signup() {\r\n    const navigate = useNavigate();\r\n    const [formData, setFormData] = useState({\r\n        username: '',\r\n        email: '',\r\n        password: '',\r\n        role: 'USER'\r\n    });\r\n    const [isDropdownOpen, setIsDropdownOpen] = useState(false);\r\n    const [message, setMessage] = useState('');\r\n\r\n    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {\r\n        setFormData({\r\n            ...formData,\r\n            [e.target.name]: e.target.value\r\n        });\r\n    };\r\n\r\n    const handleRoleSelect = (role: string) => {\r\n        setFormData({ ...formData, role });\r\n        setIsDropdownOpen(false);\r\n    };\r\n\r\n    const handleSubmit = async (e: React.FormEvent) => {\r\n        e.preventDefault();\r\n        setMessage('');\r\n\r\n        try {\r\n            const response = await fetch('http://localhost:8080/api/auth/register', {\r\n                method: 'POST',\r\n                headers: {\r\n                    'Content-Type': 'application/json',\r\n                },\r\n                body: JSON.stringify(formData),\r\n            });\r\n\r\n            if (response.ok) {\r\n                setMessage('User registered successfully! Redirecting to login...');\r\n                setTimeout(() => navigate('/login'), 2000);\r\n            } else {\r\n                const data = await response.json();\r\n                setMessage(data.message || 'Error registering user');\r\n            }\r\n        } catch (error) {\r\n            setMessage('Network error');\r\n        }\r\n    };\r\n\r\n    return (\r\n        <div className=\"auth-page\">\r\n            <div className=\"auth-container\">\r\n                <div className=\"auth-header\">\r\n                    <h2>Sign Up</h2>\r\n                </div>\r\n                <form onSubmit={handleSubmit} className=\"auth-form\">\r\n                    <div className=\"input-group\">\r\n                        <input\r\n                            type=\"text\"\r\n                            name=\"username\"\r\n                            placeholder=\"Username\"\r\n                            value={formData.username}\r\n                            onChange={handleChange}\r\n                            required\r\n                        />\r\n                    </div>\r\n                    <div className=\"input-group\">\r\n                        <input\r\n                            type=\"email\"\r\n                            name=\"email\"\r\n                            placeholder=\"Email\"\r\n                            value={formData.email}\r\n                            onChange={handleChange}\r\n                            required\r\n                        />\r\n                    </div>\r\n                    <div className=\"input-group\">\r\n                        <input\r\n                            type=\"password\"\r\n                            name=\"password\"\r\n                            placeholder=\"Password\"\r\n                            value={formData.password}\r\n                            onChange={handleChange}\r\n                            required\r\n                        />\r\n                    </div>\r\n                    <div className=\"input-group custom-select-wrapper\" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>\r\n                        <div className=\"custom-select-trigger\">\r\n                            {formData.role === 'USER' ? 'User' : 'Admin'}\r\n                            <span className=\"arrow\">▼</span>\r\n                        </div>\r\n                        {isDropdownOpen && (\r\n                            <div className=\"custom-options\">\r\n                                <div\r\n                                    className={`custom-option ${formData.role === 'USER' ? 'selected' : ''}`}\r\n                                    onClick={(e) => { e.stopPropagation(); handleRoleSelect('USER'); }}\r\n                                >\r\n                                    User\r\n                                </div>\r\n                                <div\r\n                                    className={`custom-option ${formData.role === 'ADMIN' ? 'selected' : ''}`}\r\n                                    onClick={(e) => { e.stopPropagation(); handleRoleSelect('ADMIN'); }}\r\n                                >\r\n                                    Admin\r\n                                </div>\r\n                            </div>\r\n                        )}\r\n                    </div>\r\n                    <button type=\"submit\" className=\"auth-button\">Sign Up</button>\r\n                </form>\r\n\r\n                <div className=\"auth-link\">\r\n                    Already have an account? <Link to=\"/login\">Login</Link>\r\n                </div>\r\n\r\n                {message && <p className={message.startsWith('Error') || message === 'Network error' ? 'error-message' : 'success-message'}>{message}</p>}\r\n            </div>\r\n        </div>\r\n    );\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/../frontend/src/pages/Signup.tsx b/../frontend/src/pages/Signup.tsx
+--- a/../frontend/src/pages/Signup.tsx	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ b/../frontend/src/pages/Signup.tsx	(date 1766260741164)
+@@ -1,5 +1,6 @@
+ import { useState } from 'react';
+ import { useNavigate, Link } from 'react-router-dom';
++import { authService } from '../services/api';
+ import './Auth.css';
+ 
+ export default function Signup() {
+@@ -30,23 +31,11 @@
+         setMessage('');
+ 
+         try {
+-            const response = await fetch('http://localhost:8080/api/auth/register', {
+-                method: 'POST',
+-                headers: {
+-                    'Content-Type': 'application/json',
+-                },
+-                body: JSON.stringify(formData),
+-            });
+-
+-            if (response.ok) {
+-                setMessage('User registered successfully! Redirecting to login...');
+-                setTimeout(() => navigate('/login'), 2000);
+-            } else {
+-                const data = await response.json();
+-                setMessage(data.message || 'Error registering user');
+-            }
+-        } catch (error) {
+-            setMessage('Network error');
++            await authService.register(formData);
++            setMessage('User registered successfully! Redirecting to login...');
++            setTimeout(() => navigate('/login'), 2000);
++        } catch (error: any) {
++            setMessage(error.message || 'Error registering user');
+         }
+     };
+ 
+Index: src/main/java/com/familytree/controller/RoleController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.familytree.controller;\r\n\r\nimport com.familytree.entity.Role;\r\nimport com.familytree.entity.User;\r\nimport com.familytree.repository.RoleRepository;\r\nimport com.familytree.repository.UserRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.security.access.prepost.PreAuthorize;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Optional;\r\n\r\n@CrossOrigin(origins = \"*\", maxAge = 3600)\r\n@RestController\r\n@RequestMapping(\"/api/roles\")\r\npublic class RoleController {\r\n\r\n    @Autowired\r\n    RoleRepository roleRepository;\r\n\r\n    @Autowired\r\n    UserRepository userRepository;\r\n\r\n    @PostMapping\r\n    public ResponseEntity<?> createRole(@RequestBody Role role) {\r\n        if (roleRepository.findByName(role.getName()).isPresent()) {\r\n            return ResponseEntity.badRequest().body(\"Error: Role already exists!\");\r\n        }\r\n        Role savedRole = roleRepository.save(role);\r\n        return ResponseEntity.ok(savedRole);\r\n    }\r\n\r\n    @PostMapping(\"/{roleId}/users/{userId}\")\r\n    public ResponseEntity<?> assignRoleToUser(@PathVariable Long roleId, @PathVariable Long userId) {\r\n        Optional<Role> roleOpt = roleRepository.findById(roleId);\r\n        if (roleOpt.isEmpty()) {\r\n            return ResponseEntity.badRequest().body(\"Error: Role not found.\");\r\n        }\r\n\r\n        Optional<User> userOpt = userRepository.findById(userId);\r\n        if (userOpt.isEmpty()) {\r\n            return ResponseEntity.badRequest().body(\"Error: User not found.\");\r\n        }\r\n\r\n        User user = userOpt.get();\r\n        Role role = roleOpt.get();\r\n\r\n        user.getRoles().add(role);\r\n        userRepository.save(user);\r\n\r\n        return ResponseEntity.ok(\"Role \" + role.getName() + \" assigned to user \" + user.getUsername());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/familytree/controller/RoleController.java b/src/main/java/com/familytree/controller/RoleController.java
+--- a/src/main/java/com/familytree/controller/RoleController.java	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ b/src/main/java/com/familytree/controller/RoleController.java	(date 1766261525658)
+@@ -22,6 +22,11 @@
+     @Autowired
+     UserRepository userRepository;
+ 
++    @GetMapping
++    public ResponseEntity<?> getAllRoles() {
++        return ResponseEntity.ok(roleRepository.findAll());
++    }
++
+     @PostMapping
+     public ResponseEntity<?> createRole(@RequestBody Role role) {
+         if (roleRepository.findByName(role.getName()).isPresent()) {
+Index: src/main/java/com/familytree/controller/AdminController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.familytree.controller;\r\n\r\nimport com.familytree.entity.User;\r\nimport com.familytree.repository.UserRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.security.access.prepost.PreAuthorize;\r\nimport org.springframework.web.bind.annotation.*;\r\n\r\nimport java.util.Optional;\r\n\r\n@CrossOrigin(origins = \"*\", maxAge = 3600)\r\n@RestController\r\n@RequestMapping(\"/api/admin\")\r\npublic class AdminController {\r\n\r\n    @Autowired\r\n    UserRepository userRepository;\r\n\r\n    @PutMapping(\"/users/{userId}/activate\")\r\n    @PreAuthorize(\"hasRole('ADMIN')\")\r\n    public ResponseEntity<?> activateUser(@PathVariable Long userId) {\r\n        Optional<User> userOpt = userRepository.findById(userId);\r\n        if (userOpt.isEmpty()) {\r\n            return ResponseEntity.badRequest().body(\"Error: User not found.\");\r\n        }\r\n\r\n        User user = userOpt.get();\r\n        user.setActive(true);\r\n        userRepository.save(user);\r\n\r\n        return ResponseEntity.ok(\"User \" + user.getUsername() + \" activated successfully.\");\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/familytree/controller/AdminController.java b/src/main/java/com/familytree/controller/AdminController.java
+--- a/src/main/java/com/familytree/controller/AdminController.java	(revision aa109c54b61de29e0cf51abeb90aaea735750d28)
++++ b/src/main/java/com/familytree/controller/AdminController.java	(date 1766260800835)
+@@ -31,4 +31,10 @@
+ 
+         return ResponseEntity.ok("User " + user.getUsername() + " activated successfully.");
+     }
++
++    @GetMapping("/users")
++    @PreAuthorize("hasRole('ADMIN')")
++    public ResponseEntity<?> getAllUsers() {
++        return ResponseEntity.ok(userRepository.findAll());
++    }
+ }
