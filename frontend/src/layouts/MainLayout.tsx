@@ -22,7 +22,7 @@ export default function MainLayout() {
                     <Link to="/tree" className="text-gray-400 hover:text-white transition-colors">Tree View</Link>
                     <Link to="/people" className="text-gray-400 hover:text-white transition-colors">People</Link>
                     <Link to="/admin" className="text-gray-400 hover:text-white transition-colors">Admin</Link>
-                    <Link to="/api-explorer" className="text-gray-400 hover:text-white transition-colors">API</Link>
+                    {/* <Link to="/api-explorer" className="text-gray-400 hover:text-white transition-colors">API</Link> */}
                     <button
                         onClick={handleLogout}
                         className="bg-transparent border border-white/20 text-gray-300 px-4 py-1.5 rounded hover:bg-white/5 hover:text-white hover:border-white/40 transition-all cursor-pointer"

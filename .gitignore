@@ -1,2 +1,28 @@
-### Antigravity ###
-/.idea
+# Java / Spring Boot
+target/
+*.class
+*.log
+*.jar
+*.war
+.mvn/
+mvnw
+mvnw.cmd
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+*.ids
+*.ipr
+*.iws
+
+# Frontend / Node
+node_modules/
+dist/
+coverage/
+.env
+.env.local
+.DS_Store
+
+# OS
+Thumbs.db

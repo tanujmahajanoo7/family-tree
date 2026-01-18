@@ -39,13 +39,14 @@ public class PersonService {
     public Person createPerson(PersonDTO personDTO) {
         Person person = new Person();
         mapDtoToEntity(personDTO, person);
-        
+
         Long userId = getCurrentUserId();
         person.setCreatedBy(userId);
         person.setUpdatedBy(userId);
 
         Person savedPerson = personRepository.save(person);
-        auditService.logAction("PERSON", savedPerson.getId(), "CREATE", userId, "Created person: " + savedPerson.getFullName());
+        auditService.logAction("PERSON", savedPerson.getId(), "CREATE", userId,
+                "Created person: " + savedPerson.getFullName());
         return savedPerson;
     }
 
@@ -54,31 +55,37 @@ public class PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Person not found"));
 
-        mapDtoToEntity(personDTO, person);
-        
         Long userId = getCurrentUserId();
+        if (!person.getCreatedBy().equals(userId) && !isAdmin()) {
+            throw new RuntimeException("You do not have permission to update this person.");
+        }
+
+        mapDtoToEntity(personDTO, person);
+
         person.setUpdatedBy(userId);
 
         Person savedPerson = personRepository.save(person);
-        auditService.logAction("PERSON", savedPerson.getId(), "UPDATE", userId, "Updated person: " + savedPerson.getFullName());
+        auditService.logAction("PERSON", savedPerson.getId(), "UPDATE", userId,
+                "Updated person: " + savedPerson.getFullName());
         return savedPerson;
     }
 
     @Transactional
     public void deletePerson(Long id) {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Person not found"));
+
         Long userId = getCurrentUserId();
+        if (!person.getCreatedBy().equals(userId) && !isAdmin()) {
+            throw new RuntimeException("You do not have permission to delete this person.");
+        }
+
         auditService.logAction("PERSON", id, "DELETE", userId, "Deleted person with ID: " + id);
         personRepository.deleteById(id);
     }
 
     public List<Person> getAllPersons() {
-        // In a real app, we might filter by the logged-in user's tree or family group
-        // For now, let's return all created by the current user
-        Long userId = getCurrentUserId();
-        if (userId != null) {
-            return personRepository.findByCreatedBy(userId);
-        }
-        return List.of();
+        return personRepository.findAll(); // Global visibility
     }
 
     public Person getPerson(Long id) {
@@ -108,5 +115,14 @@ public class PersonService {
         } else {
             entity.setMother(null);
         }
+    }
+
+    private boolean isAdmin() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ADMIN") || a.getAuthority().equals("SUPERADMIN"));
+        }
+        return false;
     }
 }

@@ -66,7 +66,14 @@ public class RelationshipService {
 
     @Transactional
     public void deleteRelationship(Long id) {
+        Relationship relationship = relationshipRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Relationship not found"));
+
         Long userId = getCurrentUserId();
+        if (!relationship.getCreatedBy().equals(userId) && !isAdmin()) {
+            throw new RuntimeException("You do not have permission to delete this relationship.");
+        }
+
         auditService.logAction("RELATIONSHIP", id, "DELETE", userId, "Deleted relationship with ID: " + id);
         relationshipRepository.deleteById(id);
     }
@@ -79,5 +86,14 @@ public class RelationshipService {
 
     public List<Relationship> getAllRelationships() {
         return relationshipRepository.findAll();
+    }
+
+    private boolean isAdmin() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ADMIN") || a.getAuthority().equals("SUPERADMIN"));
+        }
+        return false;
     }
 }

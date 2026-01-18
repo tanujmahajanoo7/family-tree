@@ -102,11 +102,20 @@ public class AuthController {
                 roles.add(userRole);
             }
         }
-        
+
         user.setRoles(roles);
 
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.ok("No authentication found");
+        }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        return ResponseEntity.ok(userDetails);
     }
 }
