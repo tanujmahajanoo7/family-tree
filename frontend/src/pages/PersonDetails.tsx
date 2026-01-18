@@ -31,10 +31,14 @@ export default function PersonDetails() {
             try {
                 if (id) {
                     await personService.delete(Number(id));
+                    alert('Person deleted successfully');
                     navigate('/people');
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error(err);
+                // Axios/Fetch error handling pattern: check for response data or message
+                const message = err.response?.data || err.message || 'Failed to delete person';
+                alert(message);
             }
         }
     };
