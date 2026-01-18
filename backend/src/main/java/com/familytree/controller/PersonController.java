@@ -41,14 +41,23 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
-        return ResponseEntity.ok(personService.updatePerson(id, personDTO));
+    public ResponseEntity<?> updatePerson(@PathVariable Long id, @RequestBody PersonDTO personDTO) {
+        try {
+            return ResponseEntity.ok(personService.updatePerson(id, personDTO));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN).body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePerson(@PathVariable Long id) {
-        personService.deletePerson(id);
-        return ResponseEntity.ok("Person deleted successfully");
+        try {
+            personService.deletePerson(id);
+            return ResponseEntity.ok(java.util.Map.of("message", "Person deleted successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.FORBIDDEN)
+                    .body(java.util.Map.of("error", e.getMessage()));
+        }
     }
 
     @GetMapping
